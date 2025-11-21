@@ -1,0 +1,27 @@
+�/* === map.css: Leaflet-kartspesifikk styling === */
+
+/* Leaflet CSS vil bli `<link>`-lastet når kartmodulen lastes */
+@import url('https://unpkg.com/leaflet@1.9.4/dist/leaflet.css');
+
+/* Kart-container-stil (samme regler som i index men her sentralisert) */
+.map {
+  min-height: 50vh;
+  width: 100%;
+  border: 1px solid var(--border-strong, #444);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* Fokusstiler for WCAG 2.2 Non-text Contrast */
+.leaflet-control,
+.leaflet-marker-icon:focus-visible,
+.btn:focus-visible {
+  outline: 3px solid var(--focus, #6d28d9);
+  outline-offset: 2px;
+}
+
+/* Større og mer berøringsvennlig zoombryter */
+.leaflet-control-zoom a {
+  font-size: 1.1rem;
+}
+

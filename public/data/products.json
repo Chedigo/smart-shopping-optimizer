@@ -1,0 +1,12 @@
+[
+  { "id": "p1", "name": "Hvetemel 1kg", "brand": "Møller'n", "size": "1 kg", "ean": "1234567890128" },
+  { "id": "p2", "name": "Helmelk 1L", "brand": "Tine", "size": "1 L", "ean": "5901234123457" },
+  { "id": "p3", "name": "Egg M 12pk", "brand": "Gårdsfriskt", "size": "12 stk", "ean": "4006381333931" },
+  { "id": "p4", "name": "Kaffe Filtermalt 250g", "brand": "Evergood", "size": "250 g", "ean": "7311040001005" },
+  { "id": "p5", "name": "Bananer", "brand": "Frukt & Grønt", "size": "ca. 1 kg", "ean": "7035612345679" },
+  { "id": "p6", "name": "Spagetti 500g", "brand": "Barilla", "size": "500 g", "ean": "7071234567891" },
+  { "id": "p7", "name": "Basmatiris 1kg", "brand": "Uncle Ben's", "size": "1 kg", "ean": "7045011234566" },
+  { "id": "p8", "name": "Gulost 500g", "brand": "Norvegia", "size": "500 g", "ean": "7025119876547" },
+  { "id": "p9", "name": "Hakket tomat 390g", "brand": "Mutti", "size": "390 g", "ean": "7391234567890" },
+  { "id": "p10", "name": "Kyllingfilet 700g", "brand": "Prior", "size": "700 g", "ean": "7098765432108" }
+]

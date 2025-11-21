@@ -1,0 +1,105 @@
+/* Minimal, lettvekts stil – WCAG-bevisst, lav LCP */
+.ms-wrap { display: grid; gap: .75rem; }
+.ms-head h2 { margin: 0; font-size: 1.125rem; }
+.ms-sub { margin: 0; color: var(--muted-fg, #555); font-size: .9rem; }
+
+.ms-controls { display: grid; gap: .9rem 1rem; align-items: start; }
+.ms-field { display: grid; gap: .45rem; min-width: 12rem; }
+
+/* Switch-boks over slider, venstrestilt */
+.ms-switch-box { justify-items: start; }
+.ms-switch-label { font-weight: 600; }
+
+.ms-switch {
+  border: 1px solid var(--border, #ddd);
+  padding: .45rem .8rem;
+  border-radius: 999px;
+  cursor: pointer;
+  line-height: 1;
+  color: #fff;
+}
+.ms-switch--on  { background: #2e7d32; border-color: #2e7d32; } /* grønn */
+.ms-switch--off { background: #c62828; border-color: #c62828; } /* rød */
+.ms-switch:focus { outline: 2px solid #005fcc; outline-offset: 2px; }
+
+/* Slider-boks */
+.ms-range { position: relative; width: 24rem; max-width: 100%; }
+
+/* Selve slideren – vi bruker repeating-linear-gradient for perfekt tick-justering */
+#ms-radius-range {
+  appearance: none;
+  width: 100%;
+  height: 2px;
+  background:
+    /* horisontal base-linje */
+    linear-gradient(#d0d0d0, #d0d0d0) center/100% 2px no-repeat,
+    /* vertikale tick-linjer hver 1/9 (~11.111%) for 10 verdier (5..50) */
+    repeating-linear-gradient(
+      to right,
+      transparent 0,
+      transparent calc((100% / 9) - 1px),
+      #bdbdbd calc((100% / 9) - 1px),
+      #bdbdbd calc(100% / 9)
+    );
+  background-position: center;
+  border: 0;
+  border-radius: 2px;
+}
+
+/* WebKit thumb */
+#ms-radius-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: #1976d2; /* blå sirkel */
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 1px #1976d2;
+  margin-top: -6px; /* sentrer over 2px-linje */
+}
+/* WebKit track */
+#ms-radius-range::-webkit-slider-runnable-track {
+  height: 2px; background: transparent;
+}
+
+/* Firefox thumb/track */
+#ms-radius-range::-moz-range-thumb {
+  width: 14px; height: 14px; border-radius: 50%;
+  background: #1976d2; border: 2px solid #fff;
+  box-shadow: 0 0 0 1px #1976d2;
+}
+#ms-radius-range::-moz-range-track {
+  height: 2px; background: transparent;
+}
+
+/* Tall under – space-between sørger for at hvert tall står nøyaktig under en tick */
+.ms-scale {
+  margin-top: 8px;
+  display: flex;
+  justify-content: space-between;
+  font-size: .85rem;
+  color: var(--muted-fg, #555);
+}
+.ms-scale span { text-align: center; min-width: 1.5ch; }
+
+/* Resultatliste */
+.ms-actions .btn { padding: .5rem .75rem; border-radius: .5rem; border: 1px solid var(--border, #ddd); background: var(--btn-bg, #f7f7f7); cursor: pointer; }
+.ms-actions .btn:focus { outline: 2px solid #005fcc; outline-offset: 2px; }
+
+.ms-status { min-height: 1.25rem; color: var(--muted-fg, #555); }
+
+.ms-empty { padding: .75rem; border: 1px dashed var(--border, #ddd); border-radius: .5rem; color: var(--muted-fg, #555); }
+
+.ms-item { border: 1px solid var(--border, #e1e1e1); border-radius: .75rem; padding: .75rem; display: grid; gap: .5rem; background: var(--card-bg, #fff); }
+.ms-item-head { display: grid; grid-template-columns: auto 1fr auto; gap: .5rem .75rem; align-items: center; }
+.ms-rank { font-weight: 700; }
+.ms-store { font-weight: 600; }
+.ms-meta { font-size: .85rem; color: var(--muted-fg, #555); }
+.ms-total { font-weight: 700; }
+
+.ms-breakdown { display: grid; grid-template-columns: repeat(2, max-content); gap: .25rem 1.25rem; margin: 0; }
+.ms-breakdown dt { font-weight: 500; }
+.ms-breakdown dd { margin: 0; }
+
+.ms-details-btn { justify-self: start; border: 1px solid var(--border, #ddd); background: #fafafa; padding: .25rem .5rem; border-radius: .5rem; cursor: pointer; }
+.ms-details { background: #0b1020; color: #e8f0ff; padding: .5rem; border-radius: .5rem; overflow: auto; max-height: 16rem; font-size: .85rem; }

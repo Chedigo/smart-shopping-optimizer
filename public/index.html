@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="no">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+  <title>Smart Shopping Optimizer</title>
+
+  <link rel="manifest" href="./manifest.webmanifest">
+
+  <meta name="theme-color" content="#0d6f51">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#0d6f51">
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#1f9c7c">
+
+  <link rel="stylesheet" href="./styles/tokens.css">
+  <link rel="stylesheet" href="./styles/themes.css">
+  <link rel="stylesheet" href="./styles/components/card.css">
+  <link rel="stylesheet" href="./styles/components/button.css">
+  <link rel="stylesheet" href="./styles/components/dropdown.css">
+  <link rel="stylesheet" href="./styles/fixes.css">
+  <link rel="stylesheet" href="/styles/multistore.css">
+</head>
+<body>
+
+  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="position:absolute;width:0;height:0;overflow:hidden">
+    <symbol id="ico-sun" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2" />
+      <path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+    </symbol>
+    <symbol id="ico-contrast" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2" />
+      <path d="M12 3v18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+    </symbol>
+    <symbol id="ico-moon" viewBox="0 0 24 24">
+      <path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+    </symbol>
+  </svg>
+
+  <header class="app-header" role="banner">
+    <h1>Smart Shopping Optimizer</h1>
+    <p id="status" aria-live="polite">Klar nå</p>
+
+    <div class="toolbar">
+      <button id="theme-toggle" class="icon-btn btn--sm" type="button" aria-label="Tema: Lys" title="Tema: Lys">
+        <svg class="icon__svg" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+          <use id="theme-toggle-use" href="#ico-sun" xlink:href="#ico-sun"></use>
+        </svg>
+      </button>
+
+      <div class="dropdown" id="chainsDropdownRoot">
+        <button id="chainsBtn" class="btn btn--sm" aria-haspopup="true" aria-expanded="false">Foretrukne butikker</button>
+        <div id="chainsDropdown" class="dropdown__menu" role="dialog" aria-label="Foretrukne kjeder" hidden>
+          <div class="dropdown__head">
+            <label class="switch">
+              <input type="checkbox" id="prefChainsEnabled" />
+              <span class="slider" aria-hidden="true"></span>
+              <span class="switch__label">Bruk foretrukne</span>
+            </label>
+          </div>
+          <ul id="chainsList" class="chains-list" role="listbox" aria-multiselectable="true"></ul>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="app" role="main">
+    <section class="card">
+      <h2 class="card__title">Produktsøk</h2>
+      <div class="card__body">
+        <label for="searchInput" class="visually-hidden">Søk etter produkt eller skriv EAN</label>
+        <div class="search-input-group">
+          <input id="searchInput" name="search" type="search"
+                 placeholder="Søk produktnavn eller lim inn EAN-13"
+                 role="combobox"
+                 aria-autocomplete="list"
+                 aria-expanded="false"
+                 aria-controls="suggestions"
+                 aria-haspopup="listbox"
+                 autocomplete="off" />
+        </div>
+        <ul id="suggestions" class="suggestions" role="listbox" aria-label="Forslag"></ul>
+        <details id="searchFiltersPanel" class="search-filters">
+          <summary>Avanserte filtre</summary>
+          <div class="search-filters__grid">
+            <label class="search-filters__field">
+              <span>Kategori</span>
+              <input id="filterCategory" type="text" inputmode="search" placeholder="F.eks. Meieri">
+            </label>
+            <label class="search-filters__field">
+              <span>Underkategori</span>
+              <input id="filterSubcategory" type="text" inputmode="search" placeholder="F.eks. Melk">
+            </label>
+            <label class="search-filters__field">
+              <span>Merke</span>
+              <input id="filterBrand" type="text" inputmode="search" placeholder="F.eks. Tine">
+            </label>
+            <label class="search-filters__field search-filters__field--switch">
+              <span>Laktosefri</span>
+              <span class="switch">
+                <input type="checkbox" id="filterLactoseFree">
+                <span class="slider" aria-hidden="true"></span>
+              </span>
+            </label>
+            <label class="search-filters__field">
+              <span>Fett % (min)</span>
+              <input id="filterFatMin" type="number" inputmode="decimal" step="0.1" min="0" placeholder="0.5">
+            </label>
+            <label class="search-filters__field">
+              <span>Fett % (maks)</span>
+              <input id="filterFatMax" type="number" inputmode="decimal" step="0.1" min="0" placeholder="5">
+            </label>
+            <label class="search-filters__field">
+              <span>Min størrelse</span>
+              <input id="filterSizeMin" type="number" inputmode="decimal" step="0.1" min="0" placeholder="0.5">
+            </label>
+            <label class="search-filters__field">
+              <span>Maks størrelse</span>
+              <input id="filterSizeMax" type="number" inputmode="decimal" step="0.1" min="0" placeholder="2">
+            </label>
+            <label class="search-filters__field">
+              <span>Enhet for størrelse</span>
+              <select id="filterSizeUnit">
+                <option value="auto">Auto (L/kg)</option>
+                <option value="volume">Liter</option>
+                <option value="mass">Kilogram</option>
+              </select>
+            </label>
+            <div class="search-filters__actions">
+              <button type="button" id="filterResetBtn" class="btn btn--sm btn--outline">Nullstill filtre</button>
+            </div>
+          </div>
+        </details>
+      </div>
+      <div class="hint">
+        <small>Tips: bruk piltaster for å navigere, Enter for å velge. EAN-13 valideres automatisk.</small>
+      </div>
+    </section>
+
+    <fieldset class="store-scope" aria-labelledby="scopeLegend">
+      <legend id="scopeLegend">Butikker</legend>
+      <div role="radiogroup" aria-labelledby="scopeLegend" class="segmented">
+        <input type="radio" name="scope" id="scope-all" value="all" checked>
+        <label for="scope-all">Alle</label>
+
+        <input type="radio" name="scope" id="scope-physical" value="physical">
+        <label for="scope-physical">Kun fysiske</label>
+
+        <input type="radio" name="scope" id="scope-online" value="online">
+        <label for="scope-online">Kun nettbutikker</label>
+      </div>
+    </fieldset>
+
+    <section class="card">
+      <h2 class="card__title">Handleliste</h2>
+      <div class="card__body">
+        <p class="hint">Legg til varer via søket over eller lim inn EAN. Du kan også legge til egne varer.</p>
+        <ul id="list" class="shopping-list" aria-label="Handleliste"></ul>
+        <div class="buttons" style="margin-top: var(--space-3);">
+          <button id="clearListBtn" class="btn btn--outline" type="button">Tøm listen</button>
+          <button id="installBtn" class="btn btn--primary" type="button" hidden>Installer app</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 class="card__title">Teknisk status</h2>
+      <div class="card__body">
+        <ul class="status-list">
+          <li>Manifest: <span id="manifestStatus">ukjent</span></li>
+          <li>Service worker: <span id="swStatus">ukjent</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 class="card__title">Butikker med best dekning</h2>
+      <div class="card__body">
+        <p id="singleStoreMissing" class="hint"></p>
+        <ul id="singleStoreList" class="store-summary"></ul>
+      </div>
+    </section>
+
+    <section id="multistore-panel" class="card" aria-label="Multibutikkresultater"></section>
+
+    <section id="section-map" class="card" aria-labelledby="mapTitle">
+      <h2 id="mapTitle" class="card__title">Kart</h2>
+      <div class="card__body">
+        <p id="map-privacy" class="hint" style="margin-bottom:8px;">
+          Posisjon brukes kun lokalt for å vise butikker i nærheten. Ingenting lagres eller deles.
+        </p>
+        <div class="buttons" role="group" aria-label="Kartkontroller" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+          <button id="btn-center-me" class="btn btn--primary" type="button" aria-describedby="map-privacy">Sentrer på meg</button>
+          <button id="btn-fit-stores" class="btn" type="button" title="Tilpass utsnitt til butikker">Tilpass til butikker</button>
+          <div class="manual-geocode" style="display:flex;gap:8px;flex-wrap:wrap;">
+            <label for="manual-address" class="visually-hidden">Adresse</label>
+            <input id="manual-address" type="text" placeholder="Adresse (f.eks. Storgata 1, Oslo)" style="min-width:220px;">
+            <button id="btn-set-address" class="btn" type="button">Sett posisjon</button>
+          </div>
+        </div>
+        <div id="map-status" class="hint" aria-live="polite"></div>
+        <div id="map" class="map" role="presentation"></div>
+      </div>
+    </section>
+  </main>
+
+  <script src="/scripts/multistore.js" defer></script>
+  <script defer src="./scripts/theme-toggle.js"></script>
+  <script defer src="./app.js"></script>
+
+  <script>
+    (function () {
+      let mapModuleLoaded = false;
+      let mapModulePromise = null;
+
+      function ensureMapCssLoaded() {
+        if (document.getElementById('leaflet-css')) return;
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.id = 'leaflet-css';
+        link.href = '/styles/map.css';
+        document.head.appendChild(link);
+      }
+
+      function loadMapModule() {
+        if (mapModuleLoaded && window.SSO_MAP) return Promise.resolve(window.SSO_MAP);
+        if (mapModulePromise) return mapModulePromise;
+
+        mapModulePromise = new Promise((resolve, reject) => {
+          ensureMapCssLoaded();
+          const script = document.createElement('script');
+          script.src = '/scripts/map.js';
+          script.async = true;
+          script.onload = () => {
+            mapModuleLoaded = true;
+            resolve(window.SSO_MAP);
+          };
+          script.onerror = reject;
+          document.head.appendChild(script);
+        });
+        return mapModulePromise;
+      }
+
+      function initStatusReady(message) {
+        const statusEl = document.getElementById('map-status');
+        if (statusEl) statusEl.textContent = message;
+      }
+
+      function openMapSection() {
+        const section = document.getElementById('section-map');
+        if (section && section.hasAttribute('hidden')) section.removeAttribute('hidden');
+      }
+
+      async function initMapIfNeeded({ scrollIntoView = false } = {}) {
+        openMapSection();
+        try {
+          const api = await loadMapModule();
+          await api.init('map');
+          if (Array.isArray(window.__SSO_MAP_PENDING_STORES) && window.__SSO_MAP_PENDING_STORES.length) {
+            api.feed(window.__SSO_MAP_PENDING_STORES);
+          }
+          initStatusReady('Kart klart.');
+          if (scrollIntoView) {
+            document.getElementById('section-map')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+          return api;
+        } catch (err) {
+          console.error('[SSO][map] init failed', err);
+          return null;
+        }
+      }
+
+      document.getElementById('btn-center-me')?.addEventListener('click', async () => {
+        const api = await initMapIfNeeded({ scrollIntoView: true });
+        if (!api) return;
+        api.locateUser();
+      });
+
+      document.getElementById('btn-fit-stores')?.addEventListener('click', async () => {
+        const api = await initMapIfNeeded({ scrollIntoView: true });
+        if (!api) return;
+        api.fitToStores();
+      });
+
+      document.addEventListener('click', async (event) => {
+        const trigger = event.target.closest('.js-show-on-map');
+        if (!trigger) return;
+        event.preventDefault();
+        const api = await initMapIfNeeded({ scrollIntoView: true });
+        if (!api) return;
+        const ids = trigger.getAttribute('data-store-ids');
+        const groups = trigger.getAttribute('data-store-groups');
+        api.focus({
+          ids: ids ? ids.split(',').map((s) => s.trim()).filter(Boolean) : null,
+          groups: groups ? groups.split(',').map((s) => s.trim()).filter(Boolean) : null
+        });
+      });
+
+      document.getElementById('btn-set-address')?.addEventListener('click', async () => {
+        const api = await initMapIfNeeded({ scrollIntoView: true });
+        if (!api) return;
+
+        const input = document.getElementById('manual-address');
+        const addr = input ? input.value.trim() : '';
+        if (!addr) {
+          alert('Skriv inn en gyldig adresse.');
+          return;
+        }
+
+        fetch('https://nominatim.openstreetmap.org/search?format=json&q=' + encodeURIComponent(addr))
+          .then((res) => res.json())
+          .then((data) => {
+            if (Array.isArray(data) && data[0]) {
+              const lat = parseFloat(data[0].lat);
+              const lon = parseFloat(data[0].lon);
+              if (Number.isFinite(lat) && Number.isFinite(lon)) {
+                api.setUserLocation(lat, lon);
+                const statusEl = document.getElementById('map-status');
+                if (statusEl) statusEl.textContent = 'Posisjon satt fra adresse.';
+              } else {
+                alert('Fant ikke koordinater for adressen. Prøv en annen.');
+              }
+            } else {
+              alert('Fant ikke adressen. Prøv en annen.');
+            }
+          })
+          .catch((err) => {
+            console.error('Geokoding-feil:', err);
+            alert('Kunne ikke hente posisjon fra adresse.');
+          });
+      });
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => { initMapIfNeeded(); }, { once: true });
+      } else {
+        initMapIfNeeded();
+      }
+    })();
+  </script>
+</body>
+</html>

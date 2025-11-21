@@ -1,0 +1,80 @@
+�/* Button (BEM-ready styles) */
+.btn {
+  --btn-bg: var(--color-primary);
+  --btn-fg: var(--color-on-primary);
+  --btn-bd: var(--color-primary);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+
+  padding: calc(var(--space-2) + 2px) var(--space-4);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--btn-bd);
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  font: var(--text-base)/var(--line-normal) var(--font-sans);
+  text-decoration: none;
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  transition: transform .02s ease, box-shadow .15s ease, opacity .15s ease;
+}
+.btn:hover { opacity: .95; }
+.btn:active { transform: translateY(1px); box-shadow: var(--shadow-sm); }
+.btn:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 2px; }
+
+/* Outline-variant */
+.btn--outline,
+.btn.btn-outline {
+  --btn-bg: transparent;
+  --btn-fg: var(--color-text);
+  --btn-bd: var(--color-border);
+}
+
+/* Small-variant (om du vil bruke .btn--sm senere) */
+.btn--sm { padding: var(--space-1) var(--space-3); font-size: var(--text-sm); }
+
+/* Kontrast-tema: ekstra tydelig kant */
+html[data-theme="contrast"] .btn { border-width: 2px; box-shadow: none; }
+
+/* Segmentert radiokontroll */
+.store-scope { margin-block: 0.75rem; }
+.store-scope legend { font-weight: 600; margin-bottom: 0.5rem; }
+
+.segmented {
+  display: inline-grid;
+  grid-auto-flow: column;
+  gap: 0.25rem;
+}
+
+.segmented input[type="radio"] {
+  /* Skjul nativt, men bevar tilgjengelighet */
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.segmented label {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border, #ccc);
+  border-radius: 0.5rem;
+  cursor: pointer;
+  user-select: none;
+  line-height: 1;
+}
+
+.segmented input[type="radio"]:checked + label {
+  border-color: var(--accent, var(--accent-500));
+  outline: 2px solid var(--accent, var(--accent-500));
+}
+
+.segmented label:focus-visible {
+  outline: 3px solid var(--focus, #6d28d9);
+  outline-offset: 2px; /* tydelig fokus i tråd med 2.4.13 */
+}
+
+/* Juster kontrast/fokus hvis du har egne tokens f.eks. --focus */
+
+

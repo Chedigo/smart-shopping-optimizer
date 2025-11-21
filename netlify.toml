@@ -1,0 +1,13 @@
+[functions]
+  directory = "netlify/functions"
+
+[dev]
+  port = 8889          # ← PINN Dev-proxy til 8889 (URL du åpner i nettleseren)
+  publish = "public"        # ← BYTT til "public" hvis din index.html ligger under /public
+  # targetPort = 0     # ← Ikke nødvendig for statisk side. Bruk ved eget rammeverk/dev-server.
+
+# (valgfritt) redirect for API-prefiks, hvis du vil bruke /api/*
+# [[redirects]]
+#   from = "/api/*"
+#   to = "/.netlify/functions/:splat"
+#   status = 200

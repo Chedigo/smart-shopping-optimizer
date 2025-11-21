@@ -1,0 +1,170 @@
+�@layer tokens, components, overrides;
+
+/* Tokens i eget lag */
+@layer tokens {
+  :root { /* ⬦ alle --space-*, --color-*, --radius-* ⬦ */ }
+}
+
+/* Komponenter i eget lag */
+@layer components {
+  .btn { /* ⬦ */ }
+  .card { /* ⬦ */ }
+}
+
+/* Siste-minutt-tilpasninger / tema-spesifikke overrides */
+@layer overrides {
+  html[data-theme="contrast"] .card { border-width: 2px; box-shadow: none; }
+}
+
+
+/* Design tokens (skala + semantikk). */
+:root {
+  color-scheme: light dark;
+
+  /* Typografi � system-fontstack */
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --text-xs: 12px;
+  --text-sm: 14px;
+  --text-base: 16px;
+  --text-lg: 18px;
+  --text-xl: 22px;
+  --line-tight: 1.2;
+  --line-normal: 1.5;
+
+  /* Spacing-skala (4/8/12/16/24) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+
+  /* Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-pill: 9999px;
+
+  /* Skygger */
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.08);
+  --shadow-md: 0 2px 8px rgba(0,0,0,.12);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,.16);
+
+  /* Palett */
+  --gray-0:  #ffffff;
+  --gray-50: #f7faf8;
+  --gray-200:#e5e7eb;
+  --gray-700:#555555;
+  --gray-800:#222222;
+  --gray-900:#0a0a0a;
+
+  --dark-900:#0b1210;
+  --dark-800:#111a16;
+  --dark-700:#27332d;
+
+  --brand-400:#33b18a;
+  --brand-500:#1f9c7c;
+  --brand-700:#0d6f51;
+  --brand-900:#063a2c;
+  --accent-400:#7b3fbf;
+  --accent-500:#5b2d82;
+  --accent-600:#4a226b;
+  --accent: var(--accent-500);
+
+  --blue-focus:#6d28d9;
+
+  /* Semantiske defaults (overstyres av tema i themes.css) */
+  --color-bg: var(--gray-0);
+  --color-surface: var(--gray-50);
+  --color-text: #111111;
+  --color-muted: var(--gray-700);
+  --color-border: var(--gray-200);
+  --color-primary: var(--brand-700);
+  --color-on-primary: var(--gray-0);
+  --color-focus: var(--blue-focus);
+
+  /* Layout */
+  --container-max: 720px;
+
+  /* Felt/inputs � kun tokens; styling ligger utenfor :root */
+  --color-field-bg: var(--color-surface);
+  --color-field-text: var(--color-text);
+  --color-field-placeholder: var(--color-muted);
+  --color-field-border: var(--color-border);
+  --color-caret: var(--color-text);
+}
+
+/* ===== Global formkontroller (gjelder alle tema) ===== */
+input, textarea, select {
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: var(--color-field-bg);
+  color: var(--color-field-text);
+  -webkit-text-fill-color: var(--color-field-text);
+  border: 1px solid var(--color-field-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-4);
+  caret-color: var(--color-caret);
+  background-clip: padding-box;
+}
+::placeholder { color: var(--color-field-placeholder); opacity: 1; }
+
+input:autofill, textarea:autofill, select:autofill,
+input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
+  -webkit-text-fill-color: var(--color-field-text) !important;
+  box-shadow: 0 0 0px 1000px var(--color-field-bg) inset !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* WebKit søkewidgets */
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration { filter: none; }
+
+/* Number input (antall) */
+input[type="number"].qty,
+.qty {
+  background-color: var(--color-field-bg);
+  color: var(--color-field-text);
+  -webkit-text-fill-color: var(--color-field-text);
+  border-color: var(--color-field-border);
+}
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) input[type="number"]::-webkit-inner-spin-button,
+  html:not([data-theme="light"]) input[type="number"]::-webkit-outer-spin-button {
+    filter: invert(0.85);
+  }
+}
+
+/* Basis for "vanlige" knapper. .btn har sin egen komponentstil. */
+button:not(.btn) {
+  color: var(--color-text);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: calc(var(--space-2) + 2px) var(--space-4);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+}
+
+button:hover { opacity: .95; }
+button:active { transform: translateY(1px); }
+
+button.primary {
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  border-color: var(--color-primary);
+}
+
+/* «Tøm handleliste» som outline */
+#clearListBtn {
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+}
+
+/* Fokus */
+:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 2px; }
+
+
+
+
+

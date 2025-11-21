@@ -1,0 +1,66 @@
+/* Card (BEM, tokens-basert) */
+.card {
+  background: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  padding: var(--space-4);
+  margin-block: var(--space-3);
+  transition: box-shadow .15s ease, background-color .15s ease, border-color .15s ease;
+}
+
+/* Tittel og innhold */
+.card__title {
+  margin: 0 0 var(--space-2) 0;
+  font-size: var(--text-lg);
+  line-height: var(--line-tight);
+}
+.card__body {
+  font-size: var(--text-base);
+  line-height: var(--line-normal);
+  color: var(--color-text);
+}
+
+/* Emphasis (markér kortet uten å bruke hard fargebakgrunn) */
+.card--emphasis {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-md);
+}
+
+/* Compact variant (tettere padding) */
+.card--compact { padding: var(--space-3); }
+
+/* Interactive (hover/active-stater for klikkbare kort) */
+.card--interactive { cursor: pointer; }
+.card--interactive:hover {
+  box-shadow: var(--shadow-md);
+  /* subtil highlight uten å låse farge – funker i alle tema */
+  background: color-mix(in oklab, var(--color-primary) 6%, var(--color-surface));
+}
+.card--interactive:active { transform: translateY(1px); }
+
+/* Fokus (tilgengelighet): vis tydelig ring når noe inni kortet fokuseres */
+.card:focus-within {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+/* Handling-rad (knapper/lenker nederst i kortet) */
+.card__actions {
+  display: flex;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+/* Høykontrast-tema: tydelig kant, ingen skygge for maksimal klarhet */
+html[data-theme="contrast"] .card {
+  border-width: 2px;
+  box-shadow: none;
+}
+
+/* Reduser bevegelse for de som ber om det */
+@media (prefers-reduced-motion: reduce) {
+  .card { transition: none; }
+  .card--interactive:active { transform: none; }
+}

@@ -1,0 +1,311 @@
+/* Fixes for dark theme controls � load this LAST */
+
+/* 1) Inputs i mørk tema: eksplisitt bakgrunn/tekst + WebKit text fill */
+html[data-theme="dark"] input,
+html[data-theme="dark"] textarea,
+html[data-theme="dark"] select {
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: var(--color-field-bg) !important;
+  color: var(--color-field-text) !important;
+  -webkit-text-fill-color: var(--color-field-text) !important;
+  border-color: var(--color-field-border) !important;
+  background-clip: padding-box;
+}
+
+/* 2) Søkefeltet: ekstra eksplisitt */
+html[data-theme="dark"] #searchInput {
+  background-color: var(--color-field-bg) !important;
+  color: var(--color-field-text) !important;
+  -webkit-text-fill-color: var(--color-field-text) !important;
+  border-color: var(--color-field-border) !important;
+}
+
+/* 3) Qty-felt */
+html[data-theme="dark"] .shopping-list .qty,
+html[data-theme="dark"] input[type="number"].qty {
+  background-color: var(--color-field-bg) !important;
+  color: var(--color-field-text) !important;
+  -webkit-text-fill-color: var(--color-field-text) !important;
+  border-color: var(--color-field-border) !important;
+}
+
+/* 4) Autofyll (WebKit) */
+html[data-theme="dark"] input:autofill,
+html[data-theme="dark"] textarea:autofill,
+html[data-theme="dark"] select:autofill,
+html[data-theme="dark"] input:-webkit-autofill,
+html[data-theme="dark"] textarea:-webkit-autofill,
+html[data-theme="dark"] select:-webkit-autofill {
+  -webkit-text-fill-color: var(--color-field-text) !important;
+  box-shadow: 0 0 0 1000px var(--color-field-bg) inset !important;
+  transition: background-color 5000s ease-in-out 0s !important;
+}
+
+/* 5) Tøm-handleliste-knappen */
+html[data-theme="dark"] #clearListBtn {
+  background-color: var(--color-surface) !important;
+  color: var(--color-text) !important;
+  -webkit-text-fill-color: var(--color-text) !important;
+  border: 1px solid var(--color-border) !important;
+}
+
+/* 6) Number spin-knapper i mørk tema (WebKit) */
+@media (prefers-color-scheme: dark) {
+  html[data-theme="dark"] input[type="number"]::-webkit-inner-spin-button,
+  html[data-theme="dark"] input[type="number"]::-webkit-outer-spin-button {
+    filter: invert(0.85);
+  }
+}
+
+/* === Transparent ikonknapp KUN for tema-bryter === */
+
+/* Viktig: i header skal ikon farges etter on-primary for maks kontrast */
+.app-header #theme-toggle { color: var(--color-on-primary) !important; }
+
+/* Gjennomsiktig tema-knapp, uten å påvirke andre knapper */
+#theme-toggle.icon-btn {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0;
+  width: 1.8rem; height: 1.8rem;
+}
+
+/* Sikre synlig ikon i alle tema */
+#theme-toggle .icon__svg { display: block; width: 1.1rem; height: 1.1rem; }
+#theme-toggle .icon__svg *,
+#theme-toggle .icon__svg use {
+  stroke: currentColor !important;
+  fill: none !important;
+}
+
+/* Basis for knapper som IKKE bruker .btn */
+button:not(#theme-toggle):not(.btn) {
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  -webkit-text-fill-color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  padding: calc(var(--space-2) + 2px) var(--space-4);
+  cursor: pointer;
+}
+
+button:not(#theme-toggle):not(.btn):focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+
+/* Fokusring */
+#theme-toggle.icon-btn:focus-visible,
+button:not(#theme-toggle):focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+/* --- Single-store list (lett vekt, tokens-vennlig) --- */
+.single-store-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.single-store-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--surface-3, #e6e6e6);
+}
+.single-store-list li strong {
+  font-weight: 600;
+}
+.single-store-list li small {
+  opacity: 0.8;
+}
+.single-store-list li .sum {
+  font-variant-numeric: tabular-nums;
+}
+/* Valgfritt: enkel layout for én-butikk-lista */
+.store-sum { list-style: none; margin: 0; padding: 0; }
+.store-sum li {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: .5rem;
+  padding: .5rem 0;
+  border-bottom: 1px solid var(--color-border, #e5e7eb);
+}
+.store-sum li:last-child { border-bottom: 0; }
+.store-sum .sum { font-weight: 600; }
+/* Dropdown for foretrukne kjeder */
+.toolbar { display:flex; align-items:center; gap:.5rem; }
+.dropdown { position: relative; }
+.dropdown__menu {
+  position: absolute; right: 0; top: calc(100% + .25rem);
+  min-width: 260px; max-height: 60vh; overflow:auto;
+  background: var(--color-surface, #fff);
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: .5rem; box-shadow: 0 8px 24px rgba(0,0,0,.08);
+  padding: .5rem;
+  z-index: 50;
+}
+.dropdown__head { display:flex; align-items:center; gap:.5rem; padding:.25rem .25rem .5rem; border-bottom:1px dashed var(--color-border,#e5e7eb); margin-bottom:.5rem; }
+
+.chains-list { list-style:none; margin:0; padding:0; display:grid; gap:.25rem; }
+.chain-item { display:flex; align-items:center; gap:.5rem; padding:.375rem .5rem; border-radius:.375rem; cursor:pointer; user-select:none; }
+.chain-item:focus { outline:2px solid var(--color-primary,#16a34a); outline-offset:2px; }
+.chain-item .dot { width:.55rem; height:.55rem; border-radius:50%; background: currentColor; }
+
+.chain-item.is-unselected { color: var(--color-muted,#9ca3af); background: transparent; }
+.chain-item.is-selected   { color: var(--color-success,#16a34a); background: color-mix(in oklab, currentColor 10%, transparent); }
+
+.switch { display:inline-flex; align-items:center; gap:.5rem; cursor:pointer; }
+.switch input { display:none; }
+.switch .slider {
+  width: 36px; height: 20px; border-radius: 999px; background: #cbd5e1; position: relative; display:inline-block;
+}
+.switch .slider::after {
+  content:""; width: 16px; height:16px; border-radius:50%; background:#fff; position:absolute; top:2px; left:2px; transition: transform .18s ease;
+  box-shadow: 0 1px 2px rgba(0,0,0,.15);
+}
+.switch input:checked + .slider { background: var(--color-success,#16a34a); }
+.switch input:checked + .slider::after { transform: translateX(16px); }
+.switch .switch__label { font-size:.9rem; color: var(--color-text,#111827); }
+/* === Foretrukne butikker-knapp: aktiv visuell stil (overstyrer brede !important-regler) === */
+.app-header #chainsBtn.active-filter {
+  background-color: color-mix(in oklab, #16a34a 15%, var(--color-surface)) !important; /* svak grønnlig bakgrunn */
+  border-color: #16a34a !important;           /* grønn kant */
+  color: var(--color-on-primary, #ffffff) !important;
+  /* valgfritt: litt tykkere kant for tydelighet */
+  border-width: 2px !important;
+}
+
+/* Hover når aktiv */
+.app-header #chainsBtn.active-filter:hover {
+  background-color: color-mix(in oklab, #16a34a 25%, var(--color-surface)) !important;
+  border-color: #16a34a !important;
+}
+
+/* --- S�kefelt med skann-knapp --- */
+.search-input-group {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--space-2);
+  align-items: center;
+}
+.search-input-group .icon-btn {
+  width: 42px;
+  height: 42px;
+}
+
+/* --- Strekkodeskanner overlay --- */
+.scanner[hidden] { display: none !important; }
+.scanner {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  z-index: 9999;
+}
+.scanner__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+}
+.scanner__dialog {
+  position: relative;
+  background: var(--color-bg);
+  color: var(--color-text);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.25);
+  width: min(480px, 90vw);
+  max-width: 480px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.scanner__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+}
+.scanner__body {
+  padding: var(--space-3) var(--space-4) var(--space-4);
+  display: grid;
+  gap: var(--space-3);
+}
+.scanner__video {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  background: #000;
+  border-radius: var(--radius-md);
+  object-fit: cover;
+}
+.scanner__status {
+  margin: 0;
+  text-align: center;
+}
+
+@media (max-width: 520px) {
+  .scanner__dialog {
+    width: 94vw;
+  }
+}
+
+.search-filters {
+  margin-top: var(--space-3);
+}
+.search-filters > summary {
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+  padding: 4px 0;
+}
+.search-filters > summary::marker,
+.search-filters > summary::-webkit-details-marker {
+  display: none;
+}
+.search-filters[open] {
+  border: 1px solid var(--border-subtle, #d0d0d0);
+  border-radius: var(--radius-md);
+  padding: var(--space-2);
+  background: var(--surface, #ffffff);
+}
+.search-filters__grid {
+  margin-top: var(--space-2);
+  display: grid;
+  gap: var(--space-2);
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+.search-filters__field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: var(--text-sm);
+}
+.search-filters__field--switch {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.search-filters__field input[type="text"],
+.search-filters__field input[type="number"],
+.search-filters__field select {
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid var(--border-subtle, #d0d0d0);
+  border-radius: var(--radius-sm, 6px);
+  font: inherit;
+  background: var(--surface, #ffffff);
+}
+.search-filters__actions {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-start;
+  margin-top: var(--space-1);
+}
