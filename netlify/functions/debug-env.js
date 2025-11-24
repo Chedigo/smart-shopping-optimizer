@@ -1,39 +1,61 @@
-// Enkel diagnostikk: bekreft at Kassalapp-nøkkelen finnes (uten å lekke den)
-export async function handler() {
-  const names = [
+// netlify/functions/debug-env.js
+// Enkel diagnostikk: viser om Kassalapp-nøkkel finnes i env (uten å lekke den)
+
+function findKassalappKeys() {
+  const candidateNames = [
     'KASSALAPP_TOKEN',
     'KASSALAPP_KEY',
     'KASsALAPP_KEY',
     'KASSALAPP_API_KEY'
   ];
+
   const found = [];
-  for (const n of names) {
-    if (process.env[n] && String(process.env[n]).trim()) {
-      found.push({ name: n, length: String(process.env[n]).length });
+
+  // 1) Direkte treff på kandidat-navn
+  for (const name of candidateNames) {
+    const value = process.env[name];
+    if (typeof value === 'string' && value.trim().length > 0) {
+      found.push({
+        name,
+        length: value.length
+      });
     }
   }
-  // Case-insensitivt søk (i tilfelle skrivefeil)
-  const lowerEnv = Object.fromEntries(Object.entries(process.env).map(([k, v]) => [k.toLowerCase(), v]));
-  for (const n of names) {
-    const v = lowerEnv[n.toLowerCase()];
-    if (v && String(v).trim() && !found.find(f => f.name.toLowerCase() === n.toLowerCase())) {
-      found.push({ name: n + ' (case-insensitive)', length: String(v).length });
+
+  // 2) Case-insensitivt søk etter nøkler som inneholder "kassalapp"
+  const lowerEnv = Object.fromEntries(
+    Object.entries(process.env).map(([k, v]) => [k.toLowerCase(), v])
+  );
+
+  for (const [key, value] of Object.entries(lowerEnv)) {
+    if (!key.includes('kassalapp')) continue;
+    if (typeof value !== 'string' || !value.trim()) continue;
+
+    const already = found.some(f => f.name.toLowerCase() === key);
+    if (!already) {
+      found.push({
+        name: key,
+        length: value.length
+      });
     }
   }
 
   return {
-    statusCode: 200,
-    body: JSON.stringify({
-      hasAny: found.length > 0,
-      candidatesFound: found
-    }),
-    headers: { 'Content-Type': 'application/json' }
+    hasAny: found.length > 0,
+    candidatesFound: found
   };
 }
-// Viser om Kassalapp-nøkkel finnes i env (uten å lekke innhold)
-export async function handler() {
-  const names = ['KASSALAPP_TOKEN','KASSALAPP_KEY','KASsALAPP_KEY','KASSALAPP_API_KEY'];
-  const found = [];
-  for (const n of names) if (process.env[n]?.trim()) found.push({ name: n, length: String(process.env[n]).length });
-  return { statusCode: 200, body: JSON.stringify({ hasAny: found.length > 0, candidatesFound: found }), headers: { 'Content-Type': 'application/json' } };
+
+async function handler(event, context) {
+  const info = findKassalappKeys();
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify(info),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  };
 }
+
+exports.handler = handler;
