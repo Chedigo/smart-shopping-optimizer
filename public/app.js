@@ -1236,11 +1236,17 @@ window.addEventListener('load', () => {
       return localStorage.getItem("sso:preferred:enabled") === "1";
     },
 
-    // Gjenbruk eksisterende sjekk
+        // Gjenbruk eksisterende sjekk
     isOnlineStore(storeIdOrGroup) {
-      if (typeof window.isOnlineStore === "function") return !!window.isOnlineStore(storeIdOrGroup);
-      return (oda|kolonial|nettbutikk|online)/i.test(String(storeIdOrGroup || ""));
+      // 1) Hvis appen din allerede har en isOnlineStore-funksjon, bruk den
+      if (typeof window.isOnlineStore === "function") {
+        return !!window.isOnlineStore(storeIdOrGroup);
+      }
+
+      // 2) Fallback: enkel regex på navn/gruppe
+      return /(oda|kolonial|nettbutikk|online)/i.test(String(storeIdOrGroup || ""));
     },
+
 
     // Konstanter
     getConstants() {
@@ -1251,4 +1257,5 @@ window.addEventListener('load', () => {
     }
   };
 })();
-
+
+
