@@ -1,4 +1,4 @@
-�/* === map.css: Leaflet-kartspesifikk styling === */
+/* === map.css: Leaflet-kartspesifikk styling === */
 
 /* Leaflet CSS vil bli `<link>`-lastet når kartmodulen lastes */
 @import url('https://unpkg.com/leaflet@1.9.4/dist/leaflet.css');

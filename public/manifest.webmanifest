@@ -1,7 +1,7 @@
-�{
+{
   "name": "Smart Shopping Optimizer",
   "short_name": "SSO",
-  "description": "Finn laveste pris på handlelista � nå og offline.",
+  "description": "Finn laveste pris på handlelista – nå og offline.",
   "lang": "no",
   "start_url": ".",
   "scope": ".",
@@ -23,4 +23,3 @@
     }
   ]
 }
-
